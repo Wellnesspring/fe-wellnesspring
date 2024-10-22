@@ -32,8 +32,10 @@
     "classnames": "^2.5.1",
     "core-js": "^3.37.1",
     "date-fns": "^3.6.0",
+    "install": "^0.13.0",
     "js-cookie": "^3.0.5",
     "moment-timezone": "^0.5.45",
+    "nginx": "^1.0.8",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-datepicker": "^7.3.0",
@@ -46,6 +48,7 @@
     "simplebar-react": "^3.2.5"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.9",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
