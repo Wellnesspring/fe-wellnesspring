@@ -9,7 +9,7 @@ const Level = () => {
   const maxEntries = 20; // 최대 표시 개수 설정
 
   useEffect(() => {
-    axios.get('http://localhost:9999/statistics/level')
+    axios.get('http://localhost:9999/dashboard/statistics/level')
       .then(response => {
         const fetchedData = response.data;
 
