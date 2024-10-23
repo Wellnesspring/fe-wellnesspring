@@ -40,7 +40,7 @@ function AddMeals() {
     const formattedDate = `${year}-${month}-${day}`;
     const user_id = 'userid_test';
     console.log('Requesting data for (local):', formattedDate);
-    axios.get('http://localhost:9999/dashboard/meals/getMealbyDate', {
+    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getMealbyDate', {
       params: {
         meal_date: formattedDate,
         user_id: user_id,
@@ -89,7 +89,7 @@ function AddMeals() {
       return;
     }
 
-    axios.post('http://localhost:9999/dashboard/meals/addMeal', null, {
+    axios.post('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/addMeal', null, {
       params: {
         meal: newMealName,
         user_id: ThisUserId,
@@ -107,7 +107,7 @@ function AddMeals() {
   };
   const handleDeleteMeal = (mealId) => {
     if (window.confirm('정말로 이 식사를 삭제하시겠습니까?')) {
-      axios.post(`http://localhost:9999/dashboard/meals/deleteMeal`, null, {
+      axios.post(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/deleteMeal`, null, {
         params: {
           meal_id: mealId,
         },
@@ -129,7 +129,7 @@ function AddMeals() {
   };
 
   const handleSaveMealEdit = () => {
-    axios.post(`http://localhost:9999/dashboard/meals/updateMeal`, null, {
+    axios.post(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/updateMeal`, null, {
       params: {
         meal_id: editMealId,
         meal: editedMealName,
@@ -147,7 +147,7 @@ function AddMeals() {
 
   const handleDeleteFood = (mealDetailId) => {
     if (window.confirm('정말로 이 음식을 삭제하시겠습니까?')) {
-      axios.post(`http://localhost:9999/dashboard/meals/deleteMealDetail`, null, {
+      axios.post(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/deleteMealDetail`, null, {
         params: {
           mealDetailId: mealDetailId,
         },
@@ -172,7 +172,7 @@ function AddMeals() {
 //영양소 섭취 관련 목표 입력
   const fetchUserGoals = () => {
     const user_id = 'userid_test';
-    axios.get('http://localhost:9999/dashboard/goals/getUserGoals', { params: { user_id } })
+    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/goals/getUserGoals', { params: { user_id } })
       .then(response => {
         if (response.data) {
           setUserGoals(response.data); // 목표 데이터가 있으면 설정
@@ -201,7 +201,7 @@ function AddMeals() {
     const day = String(selectedDate.getDate()).padStart(2, '0');
     const plan_date = `${year}-${month}-${day}`; // 날짜 포맷 맞추기
 
-    axios.post('http://localhost:9999/dashboard/goals/setUserGoals', {
+    axios.post('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/goals/setUserGoals', {
       kcal_plan_amount: dailyGoal.calories,
       na_plan_amount: dailyGoal.sodium,
       protein_plan_amount: dailyGoal.protein,
@@ -222,7 +222,7 @@ function AddMeals() {
   };
   const handleDeleteGoal = () => {
     const user_id = 'userid_test';
-    axios.delete('http://localhost:9999/dashboard/goals/deleteUserGoals', { params: { user_id } })
+    axios.delete('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/goals/deleteUserGoals', { params: { user_id } })
       .then(response => {
         alert('목표가 삭제되었습니다.');
         setUserGoals(null); // 목표 삭제 후 입력 폼을 보여주기 위해 상태 초기화
@@ -244,7 +244,7 @@ function AddMeals() {
   const handleSaveAmount = (mealDetailId) => {
     const newAmount = editedAmounts[mealDetailId];
 
-    axios.post(`http://localhost:9999/dashboard/meals/updateMealDetail`, null, {
+    axios.post(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/updateMealDetail`, null, {
       params: {
         id: mealDetailId,
         amount: newAmount,

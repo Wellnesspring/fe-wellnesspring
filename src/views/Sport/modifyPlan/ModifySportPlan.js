@@ -20,7 +20,7 @@ const ModifySportPlan = () => {
   useEffect(() => {
     const fetchSportPlan = async () => {
       try {
-        const response = await axios.get(`http://localhost:9999/sport/plan/${id}`);
+        const response = await axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/plan/${id}`);
         setSportPlan(response.data); // 운동 계획과 운동 항목 데이터 모두 설정
       } catch (error) {
         console.error("운동 계획을 불러오는 중 문제가 발생했습니다.");
@@ -39,7 +39,7 @@ const ModifySportPlan = () => {
       };
       delete modifiedPlan.items; // Remove 'items' key to avoid duplication
 
-      await axios.post("http://localhost:9999/sport/modify/plan", modifiedPlan); // 운동 계획과 항목들 함께 전송
+      await axios.post("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/modify/plan", modifiedPlan); // 운동 계획과 항목들 함께 전송
       alert("운동계획 수정 완료");
       navigate("/"); // 수정 후 메인 페이지로 이동
     } catch (error) {

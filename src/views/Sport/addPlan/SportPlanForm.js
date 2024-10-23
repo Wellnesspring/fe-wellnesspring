@@ -29,7 +29,7 @@ const SportPlanForm = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:9999/sport/category");
+        const response = await axios.get("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/category");
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching sport categories", error);
@@ -120,7 +120,7 @@ const SportPlanForm = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:9999/sport/save/plan", sportPlanToSave, {
+      const response = await axios.post("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/save/plan", sportPlanToSave, {
         withCredentials: true,
       });
       alert(response.data);

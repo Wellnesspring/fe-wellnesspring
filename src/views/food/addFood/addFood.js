@@ -22,7 +22,7 @@ function AddFood() {
     const fetchFavorFood = async () => {
       try {
         const userId = 'userid_test'; // 실제 사용자 ID로 대체
-        const response = await axios.get(`http://localhost:9999/dashboard/meals/getFavorFood?user_id=${userId}`);
+        const response = await axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getFavorFood?user_id=${userId}`);
         setFavorFood(response.data); // 좋아하는 음식 목록을 상태에 저장
       } catch (error) {
         console.error('Error fetching favorite food:', error);
@@ -36,7 +36,7 @@ function AddFood() {
     if (!searchString) return; // 빈 검색어는 무시
 
     try {
-      const response = await axios.get(`http://localhost:9999/dashboard/meals/getNutrient?search_string=${searchString}`);
+      const response = await axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getNutrient?search_string=${searchString}`);
       setFoodData(response.data);
 
       // 검색이 성공적이면 검색 기록에 추가
@@ -71,7 +71,7 @@ function AddFood() {
       }
 
       try {
-        const response = await axios.post('http://localhost:9999/dashboard/meals/addMealDetails', new URLSearchParams({
+        const response = await axios.post('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/addMealDetails', new URLSearchParams({
           meal_id: parsedMealId,
           food_id: parsedFoodId,
           amount: parsedAmount,

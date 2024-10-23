@@ -16,7 +16,7 @@ const Kcal = () => {
   });
 
   useEffect(() => {
-    axios.get('http://localhost:9999/dashboard/statistics/kcal')
+    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/kcal')
       .then(response => {
         const responseData = response.data[0]; // 배열의 첫 번째 요소 가져오기
         const today = new Date(responseData.today); // 현재 날짜

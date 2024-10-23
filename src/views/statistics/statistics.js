@@ -23,8 +23,8 @@ const Statistics = () => {
     const fetchData = async () => {
       try {
         const [statisticsResponse, avgResponse] = await Promise.all([
-          axios.get('http://localhost:9999/dashboard/statistics'),
-          axios.get('http://localhost:9999/dashboard/statistics/avg')
+          axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics'),
+          axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/avg')
         ]);
 
         // 성공적으로 데이터 가져오기
