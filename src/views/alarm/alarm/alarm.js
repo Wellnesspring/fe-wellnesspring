@@ -16,7 +16,7 @@ const Alarm = () => {
   // 서버에서 alert 데이터를 가져오는 함수 (userId를 파라미터로 사용)
   const fetchAlertData = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:9999/sport/alert/plan?userId=${userId}`);
+      const response = await fetch(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/alert/plan?userId=${userId}`);
       if (!response.ok) {
         throw new Error('서버 요청 실패');
       }

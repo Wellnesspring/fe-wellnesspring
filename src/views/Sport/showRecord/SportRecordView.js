@@ -22,7 +22,7 @@ const SportRecordView = () => {
     const fetchSportRecords = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9999/sport/record/view?userId=${user.userId}`,
+          `https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/record/view?userId=${user.userId}`,
           { withCredentials: true }
         );
         setRecords(response.data);
