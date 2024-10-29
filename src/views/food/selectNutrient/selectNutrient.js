@@ -13,7 +13,7 @@ function App() {
 
   // 검색 요청 핸들러
   const handleSearch = () => {
-    axios.get('http://localhost:9999/dashboard/meals/getNutrient', {
+    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getNutrient', {
       params: {
         search_string: searchTerm, // 검색어 전달
       },
@@ -35,7 +35,7 @@ function App() {
 
   // 즐겨찾기 추가 핸들러
   const handleAddFavorite = (foodId) => {
-    axios.post('http://localhost:9999/dashboard/meals/addFavor', null, {
+    axios.post('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/addFavor', null, {
       params: {
         user_id: userId, // 사용자 ID
         food_id: foodId, // 음식 ID

@@ -24,7 +24,7 @@ import avatar9 from './../../../assets/images/avatars/9.jpg';
  */
 export function chooseAvatar(profileImg) {
   const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8, avatar9];
-  return Number(profileImg) ? avatars[Number(profileImg) - 1] : "http://localhost:9999/upload/" + profileImg;
+  return Number(profileImg) ? avatars[Number(profileImg) - 1] : "https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/upload/" + profileImg;
 }
 
 function EditProfile() {
@@ -54,7 +54,7 @@ function EditProfile() {
    * 서버에 요청 보내서 유저 정보 불러오기
    */
   function loadProfile() {
-    axios.get("http://localhost:9999/user/data?userId=" + user.userId)
+    axios.get("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/user/data?userId=" + user.userId)
     .then((res) => {
       const userData = res.data
       let someDate = userData.serialNumF.charAt(6) * 1 > 2 ? "20" : "19";
@@ -114,7 +114,7 @@ function EditProfile() {
       formData.append("profile", new Blob([JSON.stringify(userFull)], { type: "application/json" }));
       console.log(userFull);
       
-      axios.put("http://localhost:9999/user/profile/edit", formData, {headers: {'Content-Type': 'multipart/form-data'}})
+      axios.put("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/user/profile/edit", formData, {headers: {'Content-Type': 'multipart/form-data'}})
       .then(res => {
         dispatcher({type: 'set', user: res.data});
         sessionStorage.setItem("wellnessUser", JSON.stringify(res.data));
@@ -133,7 +133,7 @@ function EditProfile() {
    */
   function reqDelete() {
     if(confirm("계정 삭제는 돌이킬 수 없습니다.\n정말로 계정을 삭제하시겠습니까?")) {
-      axios.delete("http://localhost:9999/user/goodbye?userId=" + user.userId)
+      axios.delete("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/user/goodbye?userId=" + user.userId)
       .then(res => {
         logOut("계정이 삭제되었습니다", nav, dispatcher);
       }).catch(res => {

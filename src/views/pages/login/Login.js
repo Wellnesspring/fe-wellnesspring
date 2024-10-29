@@ -76,7 +76,7 @@ const Login = () => {
         user[element.name] = element.value;
       }
       
-      axios.post("http://localhost:9999/auth/signinProc", user, {withCredentials: true})
+      axios.post("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/auth/signinProc", user, {withCredentials: true})
       .then((res) => {
         dispatcher({type: "set", user: res.data});
         sessionStorage.setItem("wellnessUser", JSON.stringify(res.data));
@@ -96,7 +96,7 @@ const Login = () => {
    * @param {string} code 
    */
   function useKakao(code) {
-    axios.get("http://localhost:9999/auth/kakao?code=" + code)
+    axios.get("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/auth/kakao?code=" + code)
     .then(res => {
       dispatcher({type: "set", user: res.data});
       nav("/dashboard");

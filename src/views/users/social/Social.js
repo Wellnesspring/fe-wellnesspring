@@ -47,7 +47,7 @@ function Social() {
   function addKakao(code) {
     const userId = sessionStorage.getItem("userId");
 
-    axios.get("http://localhost:9999/user/kakao?userId=" + userId + "&code=" + code)
+    axios.get("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/user/kakao?userId=" + userId + "&code=" + code)
     .then(res => {
       dispatcher({type: "set", user: res.data});
       alert("간편 소셜 로그인 등록에 성공했습니다");

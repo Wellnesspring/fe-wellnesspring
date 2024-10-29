@@ -36,7 +36,7 @@ const SportPlanView = () => {
   const fetchSportPlans = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9999/sport/plan/view?userId=${user.userId}`, // Redux에서 가져온 userId를 사용
+        `https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/plan/view?userId=${user.userId}`, // Redux에서 가져온 userId를 사용
         {
           withCredentials: true,
         }
@@ -67,7 +67,7 @@ const SportPlanView = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:9999/sport/save/record",
+        "https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/save/record",
         recordData, // 필요한 데이터만 전송
         { withCredentials: true }
       );
@@ -81,7 +81,7 @@ const SportPlanView = () => {
   const handleDelete = async (id) => {
     try {
       console.log("Deleting plan with ID:", id); // 디버그용 로그
-      await axios.delete(`http://localhost:9999/sport/delete/plan/${id}?userId=${user.userId}`); // Redux에서 가져온 userId를 사용
+      await axios.delete(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/sport/delete/plan/${id}?userId=${user.userId}`); // Redux에서 가져온 userId를 사용
       alert("운동계획 삭제 완료");
       fetchSportPlans(); // 삭제 후 새로고침
     } catch (error) {

@@ -15,7 +15,7 @@ const Subscribe = () => {
         console.log('User is subscribed:', subscription);
 
         // 구독 정보를 서버에 저장
-        fetch('http://localhost:9999/alert/save-subscription', {
+        fetch('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/alert/save-subscription', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ function SelectMeals() {
   const handleSearch = () => {
     const userId = 'userid_test'; // 사용자 ID (필요에 따라 실제 사용자 ID로 변경)
 
-    axios.get('http://localhost:9999/dashboard/meals/getMealbyString', {
+    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getMealbyString', {
       params: {
         meal_name: searchTerm,
         user_id: userId
@@ -38,7 +38,7 @@ function SelectMeals() {
   // 식사 세부 정보 요청 핸들러
   const fetchMealDetails = (mealId) => {
     console.log("Fetching meal details for ID:", mealId); // 추가된 로그
-    axios.get(`http://localhost:9999/dashboard/meals/getMealDetail`, {
+    axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getMealDetail`, {
       params: {
         meal_id: parseInt(mealId,10)
       }

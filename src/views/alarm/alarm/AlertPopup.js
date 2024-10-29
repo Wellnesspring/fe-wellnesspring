@@ -25,7 +25,7 @@ const AlertPopup = ({ visible, onClose }) => {
     }
 
     try {
-      const response = await axios.get('http://localhost:9999/alert/show', {
+      const response = await axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/alert/show', {
         params: { userId: user.userId }
       });
 
@@ -38,7 +38,7 @@ const AlertPopup = ({ visible, onClose }) => {
 
   const markAsRead = async (notificationId) => {
     try {
-      await axios.post('http://localhost:9999/alert/read', {
+      await axios.post('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/alert/read', {
         id: notificationId,
       });
 
@@ -57,7 +57,7 @@ const AlertPopup = ({ visible, onClose }) => {
     const isConfirmed = window.confirm("알림을 삭제하시겠습니까?");
     if (isConfirmed) {
       try {
-        await axios.delete('http://localhost:9999/alert/delete', {
+        await axios.delete('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/alert/delete', {
           data: { id: notificationId }, // DELETE 요청에서 data로 전달
         });
 
