@@ -153,30 +153,6 @@ const Kcal = () => {
           </CCardBody>
         </CCard>
       </CCol>
-
-      <CCol xs={6}>
-        <CCard className="mb-4">
-          <CCardHeader>목표 섭취량까지</CCardHeader>
-          <CCardBody>
-            <CCol xs={6}>
-              <CWidgetStatsB
-                className="mb-3"
-                progress={{ color: 'success', value: Math.min(100, data.intakeGoal) }}
-                text=""
-                title="이번주 섭취 목표"
-                value={`${Math.round(data.intakeGoal)}%`}
-              />
-              <CWidgetStatsB
-                className="mb-3"
-                progress={{ color: 'success', value: Math.min(100, data.expenditureGoal) }}
-                text=""
-                title="이번주 소모 목표"
-                value={`${Math.round(data.expenditureGoal)}%`}
-              />
-            </CCol>
-          </CCardBody>
-        </CCard>
-      </CCol>
     </CRow>
   )
 }
