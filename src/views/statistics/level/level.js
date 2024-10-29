@@ -9,7 +9,8 @@ const Level = () => {
   const maxEntries = 20; // 최대 표시 개수 설정
 
   useEffect(() => {
-    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/level')
+    const userId = 'testuser_id';
+    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/level?id=${userId}')
       .then(response => {
         const fetchedData = response.data;
 

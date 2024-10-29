@@ -26,8 +26,9 @@ const Food = () => {
   });
 
   useEffect(() => {
+    const userId = 'testuser_id';
     // 데이터 요청
-    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/food')
+    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/food?id=${userId}')
       .then(response => {
         // 데이터 구조에 맞게 설정
         const responseData = response.data[0]; // 배열의 첫 번째 요소 가져오기

@@ -21,10 +21,12 @@ const Statistics = () => {
   useEffect(() => {
     // 데이터 요청
     const fetchData = async () => {
+      const userId = 'testuser_id'; // 임시 사용자 ID
+
       try {
         const [statisticsResponse, avgResponse] = await Promise.all([
-          axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics'),
-          axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/avg')
+          axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics?id=${userId}`),
+          axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/avg?id=${userId}`)
         ]);
 
         // 성공적으로 데이터 가져오기

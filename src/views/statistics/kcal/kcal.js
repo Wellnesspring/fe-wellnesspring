@@ -16,7 +16,8 @@ const Kcal = () => {
   });
 
   useEffect(() => {
-    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/kcal')
+    const userId = 'testuser_id';
+    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/kcal?id=${userId}')
       .then(response => {
         const responseData = response.data[0]; // 배열의 첫 번째 요소 가져오기
         const today = new Date(responseData.today); // 현재 날짜
@@ -149,30 +150,6 @@ const Kcal = () => {
                 }
               }}
             />
-          </CCardBody>
-        </CCard>
-      </CCol>
-
-      <CCol xs={6}>
-        <CCard className="mb-4">
-          <CCardHeader>목표 섭취량까지</CCardHeader>
-          <CCardBody>
-            <CCol xs={6}>
-              <CWidgetStatsB
-                className="mb-3"
-                progress={{ color: 'success', value: Math.min(100, data.intakeGoal) }}
-                text=""
-                title="이번주 섭취 목표"
-                value={`${Math.round(data.intakeGoal)}%`}
-              />
-              <CWidgetStatsB
-                className="mb-3"
-                progress={{ color: 'success', value: Math.min(100, data.expenditureGoal) }}
-                text=""
-                title="이번주 소모 목표"
-                value={`${Math.round(data.expenditureGoal)}%`}
-              />
-            </CCol>
           </CCardBody>
         </CCard>
       </CCol>
