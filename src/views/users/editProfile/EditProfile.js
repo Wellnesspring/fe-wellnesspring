@@ -20,7 +20,8 @@ import avatar9 from './../../../assets/images/avatars/9.jpg';
 
 /** 
  * 사용자의 프로필 이미지 선택
- * @todo 기본값과 에러인 경우는 챙겼지만 기본값이 아닌 사진 반영 필요
+ * @param {string | number} profileImg 사용자 프로필 이미지의 저장된 이름 | 기본 프로필 이미지 번호
+ * @note profileImg에 빈 값이 들어올 경우를 대비해 남자면 1, 여자면 2를 넣어줘야함
  */
 export function chooseAvatar(profileImg) {
   const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8, avatar9];
@@ -97,7 +98,6 @@ function EditProfile() {
   /**
    * 사용자가 입력한 정보로 회원정보 수정 진행
    * @param {SubmitEvent} event 
-   * @todo 함수 작성 해야함
    */
   function reqUpdate(event) {
     event.preventDefault();
@@ -150,7 +150,7 @@ function EditProfile() {
       <CRow className="mb-4">
         <CCol className="justify-content-center d-flex">
           <CImage
-            src={chooseAvatar(userFull.profileImg)}
+            src={chooseAvatar(userFull.profileImg ?? userFull.gender == "M" ? 1 : 2)}
             width={150}
             height={150}
             style={{borderRadius: "50%"}}

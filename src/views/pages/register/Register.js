@@ -63,7 +63,7 @@ const Register = () => {
   function idCheck() {
     const idInput = inputs.current[0];
 
-    if(idInput.value.length > 0) { // 어떠한 이메일을 입력했고 그것이 조건에 맞는 이메일인 경우
+    if(idInput.value.length > 0 && !idInput.validity.patternMismatch) { // 어떠한 이메일을 입력했고 그것이 조건에 맞는 이메일인 경우
       axios.get("https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/auth/check", {
         params: {idck: idInput.value},
         headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
@@ -92,6 +92,7 @@ const Register = () => {
    * @param {HTMLInputElement} element 
    */
   function passwordCheck(element) {
+    element.setCustomValidity("");
     if(element.name) {  // 비밀번호
       let regExp = element.validity.valid;
       switchValidPw(element, regExp);

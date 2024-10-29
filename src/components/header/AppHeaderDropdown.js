@@ -61,7 +61,7 @@ const AppHeaderDropdown = () => {
         {/* 아바타 드롭다운 */}
         <CDropdown variant="nav-item">
           <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-            <CAvatar src={chooseAvatar(user?.profileImg)} size="md" className='avatar-overfit' />
+            <CAvatar src={chooseAvatar(user?.profileImg ?? 1)} size="md" className='avatar-overfit' />
           </CDropdownToggle>
           <CDropdownMenu className="pt-0" placement="bottom-end">
             <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
