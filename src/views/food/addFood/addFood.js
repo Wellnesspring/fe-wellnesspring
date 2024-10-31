@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   CContainer, CRow, CCol, CButton, CFormInput, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle
 } from '@coreui/react';
 import axios from 'axios';
 import '@coreui/coreui/dist/css/coreui.min.css';
+import { useSelector } from "react-redux";
 
 function AddFood() {
   const location = useLocation();
+  const navigate = useNavigate(); // navigate 함수 추가
   const queryParams = new URLSearchParams(location.search);
   const meal_id = queryParams.get('meal_id');
   const [searchString, setSearchString] = useState('');
@@ -17,11 +19,19 @@ function AddFood() {
   const [visible, setVisible] = useState(false);
   const [searchHistory, setSearchHistory] = useState([]);
   const [favorFood, setFavorFood] = useState([]); // 좋아하는 음식 목록 상태 추가
+  const user = useSelector(store => store.user);
+
+  useEffect(() => {
+    // 로그인 상태 확인: user가 없을 때 로그인 페이지로 이동
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const fetchFavorFood = async () => {
       try {
-        const userId = 'userid_test'; // 실제 사용자 ID로 대체
+        const userId = user.userId; // 실제 사용자 ID로 대체
         const response = await axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getFavorFood?user_id=${userId}`);
         setFavorFood(response.data); // 좋아하는 음식 목록을 상태에 저장
       } catch (error) {
@@ -29,8 +39,10 @@ function AddFood() {
       }
     };
 
-    fetchFavorFood(); // 컴포넌트가 마운트될 때 좋아하는 음식 목록을 가져옴
-  }, []);
+    if (user) { // user가 존재할 때만 좋아하는 음식 목록을 가져옴
+      fetchFavorFood();
+    }
+  }, [user]);
 
   const handleSearch = async () => {
     if (!searchString) return; // 빈 검색어는 무시

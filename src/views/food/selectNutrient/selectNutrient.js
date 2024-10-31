@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 import {
   CContainer, CRow, CCol, CFormInput, CButton, CFormLabel, CFormSelect, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell
 } from '@coreui/react';
 import '@coreui/coreui/dist/css/coreui.min.css';
 import axios from 'axios';
+import { useSelector } from "react-redux";
 
 function App() {
+  const navigate = useNavigate(); // navigate 초기화
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
   const [foodList, setFoodList] = useState([]); // 음식 목록 상태
   const [selectedFood, setSelectedFood] = useState(null); // 선택된 음식의 영양 성분 데이터 상태
-  const userId = 'userid_test'; // Assuming a fixed user ID, change as needed
+  const user = useSelector(store => store.user);
+  const userId = user?.userId; // user 객체에서 userId 가져오기
+
+  // user 데이터가 없으면 로그인 페이지로 이동
+  useEffect(() => {
+    if (!userId) {
+      navigate('/login'); // userId가 없으면 '/login'으로 리다이렉트
+    }
+  }, [userId, navigate]);
 
   // 검색 요청 핸들러
   const handleSearch = () => {

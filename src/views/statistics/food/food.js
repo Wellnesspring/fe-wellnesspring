@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { CCard, CCardBody, CCol, CCardHeader, CRow, CButton, CProgress } from '@coreui/react'
-import {
-  CChartBar,
-  CChartPie
-} from '@coreui/react-chartjs'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import { CCard, CCardBody, CCol, CCardHeader, CRow } from '@coreui/react';
+import { CChartBar, CChartPie } from '@coreui/react-chartjs';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Food = () => {
   const [data, setData] = useState({
@@ -22,15 +21,23 @@ const Food = () => {
     fatplan: 0,
     naplan: 0,
     meal_carbohydrate: 0,
-    kcalplan: 0
+    kcalplan: 0,
   });
 
+  const user = useSelector(store => store.user);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const userId = 'testuser_id';
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const userId = user.userId;
     // 데이터 요청
-    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/food?id=${userId}')
+    axios
+      .get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/food?id=${userId}`)
       .then(response => {
-        // 데이터 구조에 맞게 설정
         const responseData = response.data[0]; // 배열의 첫 번째 요소 가져오기
         setData({
           fiberplan: responseData.fiberplan || 0,
@@ -47,13 +54,13 @@ const Food = () => {
           fatplan: responseData.fatplan || 0,
           naplan: responseData.naplan || 0,
           meal_carbohydrate: responseData.meal_carbohydrate || 0,
-          kcalplan: responseData.kcalplan || 0
+          kcalplan: responseData.kcalplan || 0,
         });
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  }, [user, navigate]);
 
   return (
     <CRow>
@@ -75,7 +82,6 @@ const Food = () => {
             />
           </CCardBody>
         </CCard>
-
       </CCol>
 
       <CCol xs={6}>
@@ -95,7 +101,7 @@ const Food = () => {
                       data.meal_fat,
                       data.meal_na,
                       data.meal_fiber,
-                      data.meal_cholesterol
+                      data.meal_cholesterol,
                     ],
                   },
                   {
@@ -107,7 +113,7 @@ const Food = () => {
                       data.fatplan,
                       data.naplan,
                       data.fiberplan,
-                      data.cholesterolplan
+                      data.cholesterolplan,
                     ],
                   },
                 ],
@@ -118,7 +124,7 @@ const Food = () => {
         </CCard>
       </CCol>
     </CRow>
-  )
-}
+  );
+};
 
-export default Food
+export default Food;

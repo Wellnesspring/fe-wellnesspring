@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { CCard, CCardBody, CCol, CCardHeader, CRow, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 const Level = () => {
   const [data, setData] = useState({});
   const [userData, setUserData] = useState([]);
   const [categories, setCategories] = useState([]);
   const maxEntries = 20; // 최대 표시 개수 설정
+  const user = useSelector(store => store.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = 'testuser_id';
-    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/level?id=${userId}')
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const userId = user.userId;
+    axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/level?id=${userId}`)
       .then(response => {
         const fetchedData = response.data;
 
@@ -26,12 +35,12 @@ const Level = () => {
         // 카테고리와 사용자 데이터 상태 설정
         setCategories(Object.keys(groupedData));
         setData(groupedData);
-        setUserData(fetchedData.filter(item => item.user_id === 'userid_test')); // 특정 사용자 데이터 필터링
+        setUserData(fetchedData.filter(item => item.user_id === userId)); // 특정 사용자 데이터 필터링
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  }, [user, navigate]);
 
   return (
     <CRow>
@@ -61,7 +70,7 @@ const Level = () => {
                     ))}
                   <CTableRow color="dark">
                     <CTableHeaderCell scope="row">나</CTableHeaderCell>
-                    <CTableDataCell>내이름</CTableDataCell>
+                    <CTableDataCell>{user.name || '내이름'}</CTableDataCell>
                     <CTableDataCell>{userData.find(item => item.sport_name === category)?.sport_time || 0}</CTableDataCell>
                   </CTableRow>
                 </CTableBody>

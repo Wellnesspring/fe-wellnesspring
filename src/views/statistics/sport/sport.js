@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { CCard, CCardBody, CCol, CCardHeader, CRow, CButton } from '@coreui/react';
 import { CChartBar, CChartLine } from '@coreui/react-chartjs';
 import axios from 'axios';
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 const Sport = () => {
   const [sportData, setSportData] = useState(Array(7).fill(0)); // 이번 주 운동 시간을 담을 배열
   const [lastWeekData, setLastWeekData] = useState(Array(7).fill(0)); // 지난주 운동 시간을 담을 배열
+  const user = useSelector(store => store.user);
+  const navigate = useNavigate();
 
   const fetchSportData = async () => {
-    const userId = 'testuser_id'; // 사용자 ID 설정
+    const userId = user.userId; // 사용자 ID 설정
     try {
       // 2주 전까지의 데이터 요청
       const response = await axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/sport?id=${userId}`);
@@ -41,8 +45,13 @@ const Sport = () => {
   };
 
   useEffect(() => {
-    fetchSportData();
-  }, []);
+    // 로그인 상태 확인: user가 없을 때 로그인 페이지로 이동
+    if (!user) {
+      navigate('/login');
+    } else {
+      fetchSportData();
+    }
+  }, [user, navigate]);
 
   return (
     <CRow>

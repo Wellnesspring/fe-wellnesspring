@@ -4,15 +4,26 @@ import {
 } from '@coreui/react';
 import '@coreui/coreui/dist/css/coreui.min.css';
 import axios from 'axios';
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function SelectMeals() {
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태
   const [mealDetails, setMealDetails] = useState([]); // 선택한 식사 세부 정보 상태
+  const user = useSelector(store => store.user);
+  const navigate = useNavigate();
+
+  // 사용자 인증 상태 확인
+  useEffect(() => {
+    if (!user || !user.userId) {
+      navigate('/login'); // 로그인 페이지로 이동
+    }
+  }, [user, navigate]);
 
   // 검색 요청 핸들러
   const handleSearch = () => {
-    const userId = 'userid_test'; // 사용자 ID (필요에 따라 실제 사용자 ID로 변경)
+    const userId = user.userId;
 
     axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getMealbyString', {
       params: {
@@ -37,10 +48,10 @@ function SelectMeals() {
 
   // 식사 세부 정보 요청 핸들러
   const fetchMealDetails = (mealId) => {
-    console.log("Fetching meal details for ID:", mealId); // 추가된 로그
+    console.log("Fetching meal details for ID:", mealId);
     axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getMealDetail`, {
       params: {
-        meal_id: parseInt(mealId,10)
+        meal_id: parseInt(mealId, 10)
       }
     })
       .then(response => {
@@ -105,15 +116,14 @@ function SelectMeals() {
               {searchResults.length > 0 ? (
                 <ul>
                   {searchResults.map((meal, index) => {
-                    const mealtime = new Date(meal.meal_time);  // meal_time이 date 객체라고 가정
-                    const formattedDate = mealtime.toISOString().split('T')[0];  // 'YYYY-MM-DD' 형식으로 변환
+                    const mealtime = new Date(meal.meal_time);
+                    const formattedDate = mealtime.toISOString().split('T')[0];
                     return (
                       <li key={index}>
                         <CButton color="link" onClick={() => fetchMealDetails(meal.meal_id)}>
-
                           {meal.meal} ({formattedDate})
                         </CButton>
-                      </li> // 검색 결과 표시
+                      </li>
                     );
                   })}
                 </ul>

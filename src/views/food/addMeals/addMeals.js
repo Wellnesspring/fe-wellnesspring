@@ -3,15 +3,18 @@ import { CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTabl
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 function AddMeals() {
+  const navigate = useNavigate(); // navigate 함수 가져오기
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
   const [mealData, setMealData] = useState([]);
-  const [newMealName, setNewMealName] = useState(''); // 새로운 식사 이름 상태
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-  const [editMealId, setEditMealId] = useState(null); // 수정할 식사 ID
-  const [editedMealName, setEditedMealName] = useState(''); // 수정된 식사 이름
+  const [newMealName, setNewMealName] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editMealId, setEditMealId] = useState(null);
+  const [editedMealName, setEditedMealName] = useState('');
   const [dailyGoal, setDailyGoal] = useState({
     calories: '',
     sodium: '',
@@ -20,26 +23,33 @@ function AddMeals() {
     fat: '',
     cholesterol: '',
     carbs: '',
-  }); // 사용자가 설정한 목표를 저장하는 상태
+  });
+  const user = useSelector(store => store.user);
+  const [userGoals, setUserGoals] = useState({});
+  const [editedAmounts, setEditedAmounts] = useState({});
 
-  const [userGoals, setUserGoals] = useState({}); // 서버에서 가져온 사용자의 목표 상태
-  const [editedAmounts, setEditedAmounts] = useState({}); // 각 음식의 수정된 amount를 저장하는 상태
+  // 사용자가 로그인되어 있는지 확인
+  useEffect(() => {
+    if (!user) {  // user가 없으면 로그인 페이지로 리디렉션
+      navigate('/login');
+    }
+  }, [user, navigate]);
 
   const incrementDate = () => {
-    setSelectedDate(new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000)); // 하루 더하기
+    setSelectedDate(new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000));
   };
 
   const decrementDate = () => {
-    setSelectedDate(new Date(selectedDate.getTime() - 24 * 60 * 60 * 1000)); // 하루 빼기
+    setSelectedDate(new Date(selectedDate.getTime() - 24 * 60 * 60 * 1000));
   };
 
   const fetchMealData = (date) => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    const user_id = 'userid_test';
-    console.log('Requesting data for (local):', formattedDate);
+    const user_id = user.userId;
+
     axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/getMealbyDate', {
       params: {
         meal_date: formattedDate,
@@ -47,7 +57,6 @@ function AddMeals() {
       },
     })
       .then(response => {
-        console.log('Data received:', response.data);
         setMealData(response.data);
       })
       .catch(error => {
@@ -56,10 +65,10 @@ function AddMeals() {
   };
 
   useEffect(() => {
-    if (selectedDate) {
+    if (selectedDate && user) {  // user가 있을 때만 데이터 가져오기
       fetchMealData(selectedDate);
     }
-  }, [selectedDate]);
+  }, [selectedDate, user]);
 
   // meal_id 기준으로 데이터를 그룹화하는 함수
   const groupByMealId = () => {
@@ -76,7 +85,7 @@ function AddMeals() {
   };
 
   const groupedMealData = groupByMealId();
-  const ThisUserId = 'userid_test';
+  const ThisUserId = user.userId;
 
   const handleAddMeal = () => {
     const year = selectedDate.getFullYear();
@@ -169,121 +178,9 @@ function AddMeals() {
       [mealDetailId]: newAmount,
     }));
   };
-//영양소 섭취 관련 목표 입력
-  const fetchUserGoals = () => {
-    const user_id = 'userid_test';
-    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/goals/getUserGoals', { params: { user_id } })
-      .then(response => {
-        if (response.data) {
-          setUserGoals(response.data); // 목표 데이터가 있으면 설정
-          setDailyGoal({ // 목표 데이터를 일단 상태에 설정
-            calories: response.data.kcal_plan_amount,
-            sodium: response.data.na_plan_amount,
-            protein: response.data.protein_plan_amount,
-            fiber: response.data.fiber_plan_amount,
-            fat: response.data.fat_plan_amount,
-            cholesterol: response.data.cholesterol_plan_amoun,
-            carbs: response.data.carbohydrate_plan_amount,
-          });
-        } else {
-          setUserGoals(null); // 데이터 없으면 null
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching user goals:', error);
-      });
-  };
 
-  const handleSaveGoal = () => {
-    const user_id = 'userid_test';
-    const year = selectedDate.getFullYear();
-    const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-    const day = String(selectedDate.getDate()).padStart(2, '0');
-    const plan_date = `${year}-${month}-${day}`; // 날짜 포맷 맞추기
 
-    axios.post('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/goals/setUserGoals', {
-      kcal_plan_amount: dailyGoal.calories,
-      na_plan_amount: dailyGoal.sodium,
-      protein_plan_amount: dailyGoal.protein,
-      fiber_plan_amount: dailyGoal.fiber,
-      fat_plan_amount: dailyGoal.fat,
-      cholesterol_plan_amoun: dailyGoal.cholesterol,
-      carbohydrate_plan_amount: dailyGoal.carbs,
-      plan_date: plan_date,
-      user_id: user_id,
-    })
-      .then(response => {
-        alert('목표가 저장되었습니다.');
-        fetchUserGoals();  // 저장 후 목표 다시 불러오기
-      })
-      .catch(error => {
-        console.error('Error saving goals:', error);
-      });
-  };
-  const handleUpdateGoal = () => {
-    const user_id = 'userid_test';
 
-    axios.post('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/goals/updateUserGoals', {
-      kcal_plan_amount: dailyGoal.calories,
-      na_plan_amount: dailyGoal.sodium,
-      protein_plan_amount: dailyGoal.protein,
-      fiber_plan_amount: dailyGoal.fiber,
-      fat_plan_amount: dailyGoal.fat,
-      cholesterol_plan_amoun: dailyGoal.cholesterol,
-      carbohydrate_plan_amount: dailyGoal.carbs
-    })
-      .then(response => {
-        alert('목표가 저장되었습니다.');
-        fetchUserGoals();  // 저장 후 목표 다시 불러오기
-      })
-      .catch(error => {
-        console.error('Error saving goals:', error);
-      });
-  };
-  const handleDeleteGoal = () => {
-    const user_id = 'userid_test';
-    axios.delete('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/goals/deleteUserGoals', { params: { user_id } })
-      .then(response => {
-        alert('목표가 삭제되었습니다.');
-        setUserGoals(null); // 목표 삭제 후 입력 폼을 보여주기 위해 상태 초기화
-        setDailyGoal({
-          calories: '',
-          sodium: '',
-          protein: '',
-          fiber: '',
-          fat: '',
-          cholesterol: '',
-          carbs: '',
-        });
-      })
-      .catch(error => {
-        console.error('Error deleting goals:', error);
-      });
-  };
-  // amount 저장 핸들러
-  const handleSaveAmount = (mealDetailId) => {
-    const newAmount = editedAmounts[mealDetailId];
-
-    axios.post(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/meals/updateMealDetail`, null, {
-      params: {
-        id: mealDetailId,
-        amount: newAmount,
-      },
-    })
-      .then(response => {
-        console.log('Amount 수정 성공:', response.data);
-        fetchMealData(selectedDate);
-        // 수정된 amount 상태에서 제거
-        setEditedAmounts(prevState => {
-          const updatedState = { ...prevState };
-          delete updatedState[mealDetailId];
-          return updatedState;
-        });
-      })
-      .catch(error => {
-        console.error('Error updating amount:', error);
-      });
-  };
 
   return (
     <div>

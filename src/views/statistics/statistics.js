@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CCard, CCardBody, CCol, CCardHeader, CRow, CButton, CProgress } from '@coreui/react';
 import { CChartBar, CChartPie } from '@coreui/react-chartjs';
 import axios from 'axios';
-
+import { useSelector } from "react-redux";
 const Statistics = () => {
   const [data, setData] = useState([]);
   const [averageData, setAverageData] = useState({
@@ -17,11 +17,11 @@ const Statistics = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const user = useSelector(store => store.user);
   useEffect(() => {
     // 데이터 요청
     const fetchData = async () => {
-      const userId = 'testuser_id'; // 임시 사용자 ID
+      const userId = user.userId; // 임시 사용자 ID
 
       try {
         const [statisticsResponse, avgResponse] = await Promise.all([

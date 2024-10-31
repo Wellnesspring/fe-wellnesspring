@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { CCard, CCardBody, CCol, CCardHeader, CRow, CButton, CWidgetStatsB } from '@coreui/react'
-import {
-  CChartBar,
-  CChartLine
-} from '@coreui/react-chartjs'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import { CCard, CCardBody, CCol, CCardHeader, CRow, CButton, CWidgetStatsB } from '@coreui/react';
+import { CChartBar, CChartLine } from '@coreui/react-chartjs';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Kcal = () => {
   const [data, setData] = useState({
@@ -12,20 +11,29 @@ const Kcal = () => {
     dailyExpenditure: Array(7).fill(0), // 일주일간 소모 칼로리 데이터
     weight: Array(7).fill(0), // 일주일간 몸무게 데이터
     intakeGoal: 0,
-    expenditureGoal: 0
+    expenditureGoal: 0,
   });
 
+  const user = useSelector(store => store.user);
+  const navigate = useNavigate();
+  const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+
   useEffect(() => {
-    const userId = 'testuser_id';
-    axios.get('https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/kcal?id=${userId}')
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const userId = user.userId;
+    axios.get(`https://port-0-wellnesspring-m2kc1xi38f876e5d.sel4.cloudtype.app/dashboard/statistics/kcal?id=${userId}`)
       .then(response => {
         const responseData = response.data[0]; // 배열의 첫 번째 요소 가져오기
-        const today = new Date(responseData.today); // 현재 날짜
+        const today = new Date(responseData.today);
         const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // 이번 주 월요일
         const daysOfWeek = Array.from({ length: 7 }, (_, i) => {
           const date = new Date(startOfWeek);
           date.setDate(date.getDate() + i);
-          return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+          return date.toISOString().split('T')[0];
         });
 
         // 칼로리 데이터를 일주일 간에 맞추기
@@ -42,15 +50,13 @@ const Kcal = () => {
           dailyExpenditure,
           weight,
           intakeGoal,
-          expenditureGoal
+          expenditureGoal,
         });
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-  }, []);
-
-  const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+  }, [user, navigate]);
 
   return (
     <CRow>
@@ -97,7 +103,7 @@ const Kcal = () => {
                     pointBackgroundColor: 'rgba(220, 220, 220, 1)',
                     pointBorderColor: '#fff',
                     data: data.weight,
-                    yAxisID: 'y-axis-1'
+                    yAxisID: 'y-axis-1',
                   },
                   {
                     label: '섭취한 칼로리',
@@ -106,7 +112,7 @@ const Kcal = () => {
                     pointBackgroundColor: 'rgba(151, 187, 205, 1)',
                     pointBorderColor: '#fff',
                     data: data.dailyIntake,
-                    yAxisID: 'y-axis-2'
+                    yAxisID: 'y-axis-2',
                   },
                   {
                     label: '소모한 칼로리',
@@ -115,9 +121,9 @@ const Kcal = () => {
                     pointBackgroundColor: 'rgba(151, 187, 205, 1)',
                     pointBorderColor: '#fff',
                     data: data.dailyExpenditure,
-                    yAxisID: 'y-axis-2'
-                  }
-                ]
+                    yAxisID: 'y-axis-2',
+                  },
+                ],
               }}
               options={{
                 scales: {
@@ -127,34 +133,34 @@ const Kcal = () => {
                       type: 'linear',
                       position: 'left',
                       ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
                       },
                       scaleLabel: {
                         display: true,
-                        labelString: '몸무게 (kg)'
-                      }
+                        labelString: '몸무게 (kg)',
+                      },
                     },
                     {
                       id: 'y-axis-2',
                       type: 'linear',
                       position: 'right',
                       ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
                       },
                       scaleLabel: {
                         display: true,
-                        labelString: '칼로리'
-                      }
-                    }
-                  ]
-                }
+                        labelString: '칼로리',
+                      },
+                    },
+                  ],
+                },
               }}
             />
           </CCardBody>
         </CCard>
       </CCol>
     </CRow>
-  )
-}
+  );
+};
 
-export default Kcal
+export default Kcal;
